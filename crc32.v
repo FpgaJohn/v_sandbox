@@ -1,36 +1,44 @@
-//
-module CRC_32_paraller(clk,rst,load,d_finish,crc_in,crc_out); 
-input clk; //
-input rst; //
-input load; //
-input d_finish; //
-input [7:0] crc_in; //
-output [7:0] crc_out; // 
-reg [7:0] crc_out; //
-reg [31:0] crc_reg; //
-reg [1:0] count; //
-reg [1:0] state; //
-wire [31:0] next_crc_reg; //
-parameter idle = 2'b00; //
-parameter compute = 2'b01; //
-parameter finish = 2'b10; //
-//
-assign next_crc_reg[0] = crc_reg[24] ^ crc_reg[30] ^ crc_in[0] ^ 
-crc_in[6]; 
-assign next_crc_reg[1] = crc_reg[24] ^ crc_reg[25] ^ crc_reg[30] ^ 
-crc_reg[31] ^ crc_in[0] ^ crc_in[1] ^ crc_in[6] ^ crc_in[7]; 
-assign next_crc_reg[2] = crc_reg[24] ^ crc_reg[25] ^ crc_reg[26] ^ 
-crc_reg[30] ^ crc_reg[31] ^ crc_in[0] ^ crc_in[1] ^ crc_in[2] ^ crc_in[6] 
-^ crc_in[7]; 
-assign next_crc_reg[3] = crc_reg[25] ^ crc_reg[26] ^ crc_reg[27] ^ 
-crc_reg[31] ^ crc_in[1] ^ crc_in[2] ^ crc_in[3] ^ crc_in[7]; 
-assign next_crc_reg[4] = crc_reg[24] ^ crc_reg[26] ^ crc_reg[27] ^ 
-crc_reg[28] ^ crc_reg[30] ^ crc_in[0] ^ crc_in[2] ^ crc_in[3] ^ crc_in[4] 
-^ crc_in[6]; 
-assign next_crc_reg[5] = crc_reg[24] ^ crc_reg[25] ^ crc_reg[27] ^ 
-crc_reg[28] ^ crc_reg[29] ^ crc_reg[30] ^ crc_reg[31] ^ crc_in[0] ^ 
-crc_in[1] ^ crc_in[3] ^ crc_in[4] ^ crc_in[5] ^ crc_in[6] ^ crc_in[7]; 
-assign next_crc_reg[6] = crc_reg[25] ^ crc_reg[26] ^ crc_reg[28] ^ 
+
+
+module CRC_32_paraller(clk,
+                       rst,
+                       load,
+                       d_finish,
+                       crc_in,
+                       crc_out); 
+    input clk;
+    input rst;
+    input load;
+    input d_finish;
+    input [7:0] crc_in;
+    output [7:0] crc_out;
+
+    reg [7:0] crc_out;
+    reg [31:0] crc_reg;
+    reg [1:0] count;
+    reg [1:0] state;
+    wire [31:0] next_crc_reg;
+
+    parameter idle = 2'b00;
+    parameter compute = 2'b01;
+    parameter finish = 2'b10;
+
+    assign next_crc_reg[0] = crc_reg[24] ^ crc_reg[30] ^  crc_in[0]  ^  crc_in[6]; 
+    assign next_crc_reg[1] = crc_reg[24] ^ crc_reg[25] ^ crc_reg[30] ^ crc_reg[31] ^
+                              crc_in[0]  ^  crc_in[1]  ^  crc_in[6]  ^  crc_in[7]; 
+    assign next_crc_reg[2] = crc_reg[24] ^ crc_reg[25] ^ crc_reg[26] ^ crc_reg[30] ^
+                             crc_reg[31] ^  crc_in[0]  ^  crc_in[1]  ^  crc_in[2]  ^
+                              crc_in[6]  ^ crc_in[7]; 
+    assign next_crc_reg[3] = crc_reg[25] ^ crc_reg[26] ^ crc_reg[27] ^ crc_reg[31] ^
+                              crc_in[1]  ^  crc_in[2]  ^  crc_in[3]  ^  crc_in[7]; 
+    assign next_crc_reg[4] = crc_reg[24] ^ crc_reg[26] ^ crc_reg[27] ^ crc_reg[28] ^
+                             crc_reg[30] ^  crc_in[0]  ^  crc_in[2]  ^  crc_in[3]  ^
+                              crc_in[4]  ^  crc_in[6]; 
+    assign next_crc_reg[5] = crc_reg[24] ^ crc_reg[25] ^ crc_reg[27] ^ crc_reg[28] ^
+                             crc_reg[29] ^ crc_reg[30] ^ crc_reg[31] ^ crc_in[0] ^ 
+                              crc_in[1]  ^  crc_in[3]  ^  crc_in[4]  ^  crc_in[5] ^
+                              crc_in[6]  ^  crc_in[7]; 
+    assign next_crc_reg[6] = crc_reg[25] ^ crc_reg[26] ^ crc_reg[28] ^ 
 crc_reg[29] ^ crc_reg[30] ^ crc_reg[31] ^ crc_in[1] ^ crc_in[2] ^ crc_in[4] 
 ^ crc_in[5] ^ crc_in[6] ^ crc_in[7]; 
 assign next_crc_reg[7] = crc_reg[24] ^ crc_reg[26] ^ crc_reg[27] ^ 
